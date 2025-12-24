@@ -2,10 +2,20 @@
 # Licensed under the GNU General Public License v3.0.  
 # See LICENSE file in the repository root for full license text.
 
+import os
 from telethon import TelegramClient
-from config import API_ID, API_HASH, BOT_TOKEN, STRING
 from pyrogram import Client
 import sys
+
+API_ID = os.getenv("API_ID")
+API_HASH = os.getenv("API_HASH")
+
+if not API_ID or not API_HASH:
+    raise RuntimeError("API_ID or API_HASH is missing. Check Railway Variables.")
+
+API_ID = int(API_ID)  # REQUIRED
+
+client = TelegramClient("telethonbot", API_ID, API_HASH)
 
 client = TelegramClient("telethonbot", API_ID, API_HASH)
 app = Client("pyrogrambot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
@@ -25,4 +35,5 @@ async def start_client():
     await app.start()
     print("Pyro App Started...")
     return client, app, userbot
+
 
